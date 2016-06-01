@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="CyclingApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="node_modules/angular/angular.min.js"></script>
+    <link rel="stylesheet" href="http://bootswatch.com/flatly/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="cycling" ng-controller="cycleCtrl">
+        {{response}}
+        <button ng-click="getData(2)">login</button>
+
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="item in data">{{item}}</li>
+        </ul>
+
+
+        <form novalidate>
+            <div class="form-group">
+                <input type="text" name=""  ng-model="user.name">
+                <input type="password" name="" ng-model="user.password">
+                <button class="btn btn-success" ng-click="addUser(user.name, user.password)">Add user</button>
+            </div>
+
+        </form>
+
+    </div>
+
+
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/controllers.js"></script>
+</body>
+</html>
