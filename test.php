@@ -10,18 +10,19 @@ define('BASE_URI', 'http://52.28.145.71:8080');
 require 'vendor/autoload.php';
 use GuzzleHttp\Client;
 
+// mini wrapper to avoid cross side origin policy
 class Cycle {
 
     private $client;
-    private $id;
 
+    // inject guzzle through $client
     public function __construct($client) {
-
         $this->client = $client;
-
     }
 
+    // fetch token
     private function getToken() {
+
         $userData = [
             'Username' => 'Marco Npc',
             'Password' => 'MaaktNietUit'
@@ -41,6 +42,7 @@ class Cycle {
 
     }
 
+    // work in progress
     public function getData() {
         $token = $this->getToken();
         $response = $this->client->get('/Users/' . $this->id  . '/Records?access_token=' . $token);
@@ -51,6 +53,8 @@ class Cycle {
         return $return;
     }
 
+
+    // post request to user
     public function addUser($username, $password) {
         $token = $this->getToken();
 
@@ -88,6 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     $post = get_object_vars(json_decode($data));
     if (isset($post['password']) && isset($post['username']))
     {
+        // add user to
         $cycle->addUser($post['password'], $post['username']);
     }
 }
