@@ -21,7 +21,7 @@ class Cycle {
     }
 
     // fetch token
-    private function getToken() {
+    public function getToken() {
 
         $userData = [
             'Username' => 'Marco Npc',
@@ -80,10 +80,10 @@ class Cycle {
 $client = new Client(['base_uri' => BASE_URI]);
 $cycle = new Cycle($client);
 
-if ( isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT) )
+if ( isset($_GET['token']) && filter_var($_GET['token'], FILTER_VALIDATE_INT) )
 {
     header('Content-Type: application/json');
-    echo json_encode($cycle->getUsers());
+    echo json_encode($cycle->getToken());
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST')

@@ -1,17 +1,15 @@
 /**
  * Created by Fedde on 30-5-2016.
  */
-app.controller('cycleCtrl', function(cycleData, $scope){
+app.controller('cycleCtrl', function(cycleData, $scope, $http){
 
-    cycleData.async().then(function(response){
-        $scope.response = response;
+    cycleData.getToken().then(function(token){
+        $scope.token = token.data;
+
+
+        console.log($scope.token); 
     })
 
-    $scope.addUser = function(username, password) {
-        cycleData.addUser(username, password).then(function(response){
-            $scope.response = response;
-        })
-    }
 
 
 });

@@ -4,21 +4,16 @@
 var app = angular.module('CyclingApp', []);
 
 app.factory('cycleData', function($http, $httpParamSerializerJQLike){
+
+    var base = 'http://52.28.145.71:8080';
+
    return {
-       async: function() {
-           return $http.get('test.php');
+       getToken : function() {
+           return $http.get('test.php?token=1')
        },
 
-       addUser: function(username, password) {
-            return $http({
-                method      : 'post',
-                url         : 'test.php',
-                headers     : {'Content-Type': 'application/x-www-form-urlencoded'},
-                data        : {
-                    "username" : username,
-                    "password" : password
-                }
-            });
+       getGroups : function() {
+           return $http.get('')
        }
    }
 });
