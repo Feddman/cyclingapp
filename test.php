@@ -38,41 +38,63 @@ class Cycle {
         return $return->access_token;
     }
 
-    public function getUsers() {
+    public function getGroups() {
+        $response = $this->client->get('/groups/');
+        $return = $response->getBody();
+//        $return = json_decode($return);
+        return $return;
 
+    }
+
+    public function getUsers() {
+        $response = $this->client->get('/users/');
+        $return = $response->getBody();
+//        $return = json_decode($return);
+        return $return;
+    }
+
+    public function getMembersOfGroup($id) {
+        $token = $this->getToken();
+        $response = $this->client->get('/Groups/' . $id . '/Members?access_token=' . $token);
+
+        $return = $response->getBody();
+//        $return = json_decode($return);
+
+        return $return;
+    }
+
+    public function getStatsById($id) {
+        $token = $this->getToken();
+        $users = $this->getUsers();
+
+        $response = $this->client->get('/Users/' . $id . '/Stats?access_token=' . $token);
+
+        $return = $response->getBody();
+//        $return = json_decode($return);
+
+        return $return;
+    }
+
+    public function getLastPosition($id) {
+        $token = $this->getToken();
+
+        $response = $this->client->get('/Users/' . $id . '/Records?access_token=' . $token);
+
+        $return = $response->getBody();
+//        $return = end($return);
+        $return = json_decode($return);
+        return json_encode(end($return));
     }
 
     // work in progress
     public function getData() {
+
         $token = $this->getToken();
         $response = $this->client->get('/Users/' . $this->id  . '/Records?access_token=' . $token);
 
         $return = $response->getBody();
         $return = json_decode($return);
-
         return $return;
-    }
-
-
-    // post request to user
-    public function addUser($username, $password) {
-        $token = $this->getToken();
-
-        $dataToSend = [
-            'Access_token'  => $token,
-            'username'      => 'Pietje Pannenkoek',
-            'password'      => 'Safestpasswordever'
-        ];
-
-        $response = $this->client->post('Users', [
-           'json' => $dataToSend
-        ]);
-        $code = $response->getStatusCode();
-        $result = $response->json();
-        return [
-            'code' => $code,
-            'result' => $result
-        ];
     }
 
 }
@@ -86,17 +108,27 @@ if ( isset($_GET['token']) && filter_var($_GET['token'], FILTER_VALIDATE_INT) )
     echo json_encode($cycle->getToken());
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST')
+
+if (isset($_GET['groups']))
 {
-    $data = file_get_contents("php://input");
-    $post = get_object_vars(json_decode($data));
-    if (isset($post['password']) && isset($post['username']))
-    {
-        // add user to
-        $cycle->addUser($post['password'], $post['username']);
-    }
+    echo $cycle->getGroups();
 }
 
+if (isset($_GET['users'])){
+    echo $cycle->getUsers();
+}
 
+if (isset($_GET['membersofgroup'])) {
+    echo $cycle->getMembersOfGroup($_GET['membersofgroup']);
+}
+
+if (isset($_GET['stats'])) {
+    echo $cycle->getStatsById($_GET['stats']);
+}
+
+if (isset($_GET['getpositionfrom']))
+{
+    echo $cycle->getLastPosition($_GET['getpositionfrom']);
+}
 
 

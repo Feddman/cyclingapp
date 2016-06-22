@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="node_modules/angular/angular.min.js"></script>
+
+    <script src="js/ng-map.min.js"></script>
     <link rel="stylesheet" href="http://bootswatch.com/flatly/bootstrap.min.css">
 </head>
 <body>
@@ -11,12 +13,51 @@
 <div class="container">
 
     <div class="cycling" ng-controller="cycleCtrl">
+        <h3>Radius Cycling Teams </h3>
+        {{int}}
+        <div class="panel panel-default" ng-repeat="group in groups">
+            <div class="panel-heading"><h2>{{group.name}}</h2></div>
+            <div class="panel-body">
 
-   </div>
+                    <div class="col-md-4" ng-repeat="member in group.members">
+                                <div class="inner" style="padding: 10px; min-height:530px; margin:20px; background: #dedede">
+                                    <h3>{{member.username}}</h3>
+                                    <p ng-if="!member.stats"><i>Geen statistieken bekend.</i></p>
+                                    <div ng-if="member.stats">
+
+                                            <h4>Statistieken:</h4>
+
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <th>Gereden afstand:</th>
+                                                    <td>{{member.stats.distance / 1000 | number:2}} km</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Totale tijd:</th>
+                                                    <td>{{member.stats.time / 60 | number:2}}  min.</td>
+                                                </tr>
+                                            </table>
+                                            <div class="map">
+                                                <ng-map zoom="11" center="[{{member.position.y}}, {{member.position.x}}]">
+                                                    <marker position="{{member.position.y}},{{member.position.x}}" title="Hello World!"></marker>
+                                                </ng-map>
+                                            </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                    </div>
+
+
+            </div>
+        </div>
+    </div>
 
 
 </div>
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5G55kinkHtA4KS3wHlhC9sJM70I2g2ic"></script>
 <script src="js/app.js"></script>
 <script src="js/controllers.js"></script>
 </body>
